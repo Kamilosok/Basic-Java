@@ -26,6 +26,7 @@ public class Exception {
         {
             System.out.println("Something went wrong");
         }
+        
         finally {
             System.out.println("Program finished");
             scanner.close();
