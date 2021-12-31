@@ -29,7 +29,7 @@ public class FlowLayouter {
         JButton button5 = new JButton("5");
         JButton button6 = new JButton("6");
         JButton button7 = new JButton("7");
-        JButton button8 = new JButton("9");
+        JButton button8 = new JButton("8");
         JButton button9 = new JButton("9");
 
         button1.setFocusable(false);
