@@ -91,20 +91,25 @@ public class CalcFrame extends JFrame{
         {
             if(ch == '=' && currOperation!=' ')
             {
-                switch (currOperation)
+                try {
+                    switch (currOperation) {
+                        case '+':
+                            currNumber += operNumber;
+                            break;
+                        case '-':
+                            currNumber -= operNumber;
+                            break;
+                        case '*':
+                            currNumber *= operNumber;
+                            break;
+                        case '/':
+                            currNumber /= operNumber;
+                            break;
+                    }
+                }
+                catch (ArithmeticException e)
                 {
-                    case '+':
-                        currNumber+=operNumber;
-                        break;
-                    case '-':
-                        currNumber-=operNumber;
-                        break;
-                    case '*':
-                        currNumber*=operNumber;
-                        break;
-                    case '/':
-                        currNumber/=operNumber;
-                        break;
+                    e.printStackTrace();
                 }
                 System.out.println("=" + currNumber);
             }
