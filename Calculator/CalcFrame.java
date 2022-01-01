@@ -9,14 +9,20 @@ public class CalcFrame extends JFrame{
     JPanel panel = new JPanel();
     TextField textField = new TextField();
 
-    int currNumber = 0;
-    int operNumber = 0;
+    String currNumber = "";
+    String operNumber = "";
     char currOperation = ' ';
+    float theNumber = 0;
     boolean isContinuousInput = false, isOperating = false;
     String equation;
 
     CalcFrame()
     {
+        this.setTitle("Calculator");
+        this.setLayout(new FlowLayout());
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(new Dimension(600,700));
+        this.setResizable(false);
         panel.setBackground(Color.blue);
         panel.setPreferredSize(new Dimension(600,200));
         panel.setLayout(new FlowLayout());
@@ -49,10 +55,6 @@ public class CalcFrame extends JFrame{
             }
 
         }
-
-            this.setLayout(new FlowLayout());
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setSize(new Dimension(600,800));
             this.setVisible(true);
     }
 
@@ -64,26 +66,24 @@ public class CalcFrame extends JFrame{
             {
                 if (!isContinuousInput)
                 {
-                    currNumber = ch - '0';
+                    currNumber += (ch - '0');
                     isContinuousInput = true;
                 }
                 else
                 {
-                    currNumber *= 10;
-                    currNumber += ch - '0';
+                    currNumber += (ch - '0');
                 }
             }
             else
             {
                 if (!isContinuousInput)
                 {
-                    operNumber = ch - '0';
+                    operNumber += (ch - '0');
                     isContinuousInput = true;
                 }
                 else
                 {
-                    operNumber *= 10;
-                    operNumber += ch - '0';
+                    operNumber += (ch - '0');
                 }
             }
         }
@@ -94,31 +94,39 @@ public class CalcFrame extends JFrame{
                 try {
                     switch (currOperation) {
                         case '+':
-                            currNumber += operNumber;
+                            theNumber = Float.valueOf(currNumber)+Float.valueOf(operNumber);
+                            currNumber = Float.toString(theNumber);
                             break;
                         case '-':
-                            currNumber -= operNumber;
+                            theNumber = Float.valueOf(currNumber)-Float.valueOf(operNumber);
+                            currNumber = Float.toString(theNumber);
                             break;
                         case '*':
-                            currNumber *= operNumber;
+                            theNumber = Float.valueOf(currNumber)*Float.valueOf(operNumber);
+                            currNumber = Float.toString((float)(Math.round(theNumber*100.0)/100.0));
                             break;
                         case '/':
-                            currNumber /= operNumber;
+                            theNumber = Float.valueOf(currNumber)/Float.valueOf(operNumber);
+                            currNumber = Float.toString((float)(Math.round(theNumber*100.0)/100.0));
                             break;
                     }
                 }
                 catch (ArithmeticException e)
                 {
+                    equation = "ERROR";
                     e.printStackTrace();
                 }
-                System.out.println("=" + currNumber);
+                catch (NumberFormatException e)
+                {
+                    e.printStackTrace();
+                }
             }
             else
                 if(ch=='C')
                 {
-                    currNumber=0;
+                    currNumber="";
                     isContinuousInput = false;
-                    operNumber = 0;
+                    operNumber = "";
                     currOperation = ' ';
                 }
             else
@@ -126,18 +134,35 @@ public class CalcFrame extends JFrame{
                 currOperation = ch;
                 isOperating = true;
                 isContinuousInput = false;
-                operNumber = 0;
+                operNumber = "";
             }
         }
 
-        if(currOperation == ' ')
+        if(equation != "ERROR")
         {
-            equation = Integer.toString(currNumber);
+            if (currOperation == ' ' || currOperation== '=')
+            {
+                equation = currNumber;
+                currOperation = ' ';
+            }
+            else
+                equation = (currNumber + " " + currOperation + " " + operNumber);
+            updateTextField();
         }
         else
-            equation = (Integer.toString(currNumber) + " " + currOperation + " " + Integer.toString(operNumber));
+        {
+            updateTextField();
+            currNumber="";
+            isContinuousInput = false;
+            operNumber = "";
+            currOperation = ' ';
+        }
 
+        System.out.println("CurrNumber: "+currNumber);
+        System.out.println("CurrOper: "+currOperation);
+        System.out.println("OperNumber: "+operNumber);
         updateTextField();
+
     }
 
     void updateTextField()
