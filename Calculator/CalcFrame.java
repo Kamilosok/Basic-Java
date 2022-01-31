@@ -106,9 +106,12 @@ public class CalcFrame extends JFrame{
                             currNumber = Float.toString((float)(Math.round(theNumber*100.0)/100.0));
                             break;
                         case '/':
+                            if(Float.valueOf(operNumber)==0)
+                            {
+                                throw new ArithmeticException();
+                            }
                             theNumber = Float.valueOf(currNumber)/Float.valueOf(operNumber);
                             currNumber = Float.toString((float)(Math.round(theNumber*100.0)/100.0));
-                            break;
                     }
                 }
                 catch (ArithmeticException e)
@@ -147,11 +150,9 @@ public class CalcFrame extends JFrame{
             }
             else
                 equation = (currNumber + " " + currOperation + " " + operNumber);
-            updateTextField();
         }
         else
         {
-            updateTextField();
             currNumber="";
             isContinuousInput = false;
             operNumber = "";
